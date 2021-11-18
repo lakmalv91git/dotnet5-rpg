@@ -3,6 +3,8 @@ using dotnet_rpg.Models;
 using System.Collections.Generic;
 using System.Linq;
 using dotnet_rpg.Services;
+using System.Threading.Tasks;
+using dotnet_rpg.Dtos.Characters;
 
 namespace dotnet_rpg.Controllers
 {
@@ -10,7 +12,7 @@ namespace dotnet_rpg.Controllers
     [Route("[controller]")]
     public class CharacterController : ControllerBase
     {
-           private readonly ICharacterService _characterService;
+        private readonly ICharacterService _characterService;
 
         public CharacterController(ICharacterService characterService)
         {
@@ -20,21 +22,21 @@ namespace dotnet_rpg.Controllers
 
         [HttpGet("GetAll")]
         // [Route("GetAll")]
-        public ActionResult<List<Character>> Get()
+        public async Task<ActionResult<ServiceResponse<List<GetCharacterDto>>>> Get()
         {
-            return Ok(_characterService.GetAllCharacters());
+            return Ok(await _characterService.GetAllCharacters());
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Character> GetSingle(int id)
+        public async Task<ActionResult<ServiceResponse<GetCharacterDto>>> GetSingle(int id)
         {
-            return Ok(_characterService.GetCharacterById(id));
+            return Ok(await _characterService.GetCharacterById(id));
         }
 
         [HttpPost]
-        public ActionResult<Character> AddCharacter(Character newCharacter)
+        public async Task<ActionResult<ServiceResponse<GetCharacterDto>>> AddCharacter(AddCharacterDto newCharacter)
         {
-            return Ok(_characterService.AddCharacter(newCharacter));
+            return Ok(await _characterService.AddCharacter(newCharacter));
         }
     }
 }
